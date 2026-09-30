@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apoio Soluti</title>
+  <link rel="stylesheet" href="popup.css">
+  <script src="tema.js"></script>
+</head>
+<body>
+  <!--
+    A marca divide a linha com as abas. Sozinha ela ocupava 63px de um popup
+    de 580px para repetir o nome da extensao que o usuario acabou de clicar.
+  -->
+  <header class="topo">
+    <span class="marca">
+      <span class="marca-icone" aria-hidden="true">
+        <svg viewBox="0 0 100 100" width="16" height="16">
+          <path fill="currentColor" fill-rule="evenodd" d="M9.34 98.27C5.71 94.89 6.61 90.92 13.32 80.74C16.58 75.79 20.36 69.83 21.72 67.51C24.08 63.48 24.12 63.23 22.58 62.37C18.83 60.27 13.52 54.42 10.77 49.35C7.89 44.03 7.83 43.69 7.83 33.48C7.83 23.84 8.01 22.67 10.23 18.15C13.2 12.11 19.75 5.85 26.33 2.77L31.3 0.43 58.67 0.17C73.72 0.03 86.95 0.14 88.07 0.42C90.53 1.04 92.75 5.79 91.97 8.78C91.67 9.93 87.78 16.51 83.32 23.4C78.86 30.28 75.24 36.15 75.27 36.44C75.3 36.72 76.95 38.14 78.95 39.59C87.61 45.88 92.18 55.58 92.03 67.39C91.86 80.61 85.38 90.94 73.65 96.72L67.87 99.57 39.58 99.83C11.91 100.08 11.25 100.05 9.34 98.27ZM50.92 63.32C53.52 62.13 56.96 60.04 58.55 58.69C61.36 56.32 73.48 39.13 73.48 37.53C73.48 35.79 67.56 34.35 60.43 34.35C52.3 34.36 46.32 36.45 40.61 41.28C38.01 43.48 25.65 61.12 25.65 62.64C25.65 63.27 28.96 64.75 32.17 65.55C36.47 66.62 46.27 65.46 50.92 63.32Z" />
+        </svg>
+      </span>
+      <span class="marca-nome">Apoio Soluti</span>
+    </span>
+
+    <nav class="abas" role="tablist">
+      <button class="aba" data-aba="dia" role="tab" aria-selected="false">
+        <span class="aba-icone" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="7.2" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M8.4 7.1 13.1 10l-4.7 2.9V7.1Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="aba-nome">Começar</span>
+      </button>
+      <button class="aba ativa" data-aba="macros" role="tab" aria-selected="true">
+        <span class="aba-icone" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="none">
+            <rect x="2.5" y="3.5" width="15" height="13" rx="1.4" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M5.6 7.2l2 1.9-2 1.9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9.4 11h4.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="aba-nome">Macros</span>
+      </button>
+      <button class="aba" data-aba="solicitacao" role="tab" aria-selected="false">
+        <span class="aba-icone" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="none">
+            <path d="M6 2.5h6l3 3v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-13a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M12 2.5v3h3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M7.3 11h5.4M7.3 13.6h5.4M7.3 8.4h2.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="aba-nome">Consulta</span>
+      </button>
+      <button class="aba" data-aba="databricks" role="tab" aria-selected="false">
+        <span class="aba-icone" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="none">
+            <path d="M4 6a6 2 0 1 0 12 0 6 2 0 1 0-12 0zm0 4a6 2 0 1 0 12 0m-12 4a6 2 0 1 0 12 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          <span id="abaErroDatabricks" class="aba-badge-erro hidden" title="A última busca falhou"></span>
+        </span>
+        <span class="aba-nome">Databricks</span>
+      </button>
+      <button class="aba" data-aba="sdeal" role="tab" aria-selected="false">
+        <span class="aba-icone" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="none">
+            <path d="M2.9 8.3V6.5a1.1 1.1 0 0 1 1.1-1.1h12a1.1 1.1 0 0 1 1.1 1.1v1.8a1.75 1.75 0 0 0 0 3.4v1.8a1.1 1.1 0 0 1-1.1 1.1H4a1.1 1.1 0 0 1-1.1-1.1v-1.8a1.75 1.75 0 0 0 0-3.4Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+            <path d="M7.9 5.6v1.5M7.9 9.3v1.4M7.9 12.9v1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+          <span id="abaErroSdeal" class="aba-badge-erro hidden" title="A última busca falhou"></span>
+          <span id="abaSessaoSdeal" class="aba-badge-sessao" title="Sessão não verificada"></span>
+        </span>
+        <span class="aba-nome">S.Deal</span>
+      </button>
+      <button class="aba" data-aba="gestao" role="tab" aria-selected="false">
+        <span class="aba-icone" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="none">
+            <path d="M1.7 8.1h2.8l3.1 2.9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M18.3 8.1h-2.8l-3.1 2.9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M6.4 9.4 8.9 7.2a1.5 1.5 0 0 1 2.2 0l2.5 2.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M7.6 11 10 13.3l2.4-2.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span id="abaErroGestao" class="aba-badge-erro hidden" title="A última busca falhou"></span>
+          <span id="abaSessaoGestao" class="aba-badge-sessao" title="Sessão não verificada"></span>
+        </span>
+        <span class="aba-nome">GO</span>
+      </button>
+      <button class="aba" data-aba="wings" role="tab" aria-selected="false">
+        <span class="aba-icone" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="none">
+            <path d="M2.6 14.6c4.3.5 7.8-.7 10.5-3.6 1.6-1.7 2.8-3.2 3.6-4.4.5-.8 1.4-.4 1.2.5-.7 3.3-2.1 6-4.2 8.1-1.5 1.4-3.4 2.2-5.6 2.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M6.2 14.2c2.5.1 4.6-.9 6.3-2.9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            <path d="M9.6 12.4c1.4-.2 2.6-.9 3.6-2.1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+          <span id="abaErroWings" class="aba-badge-erro hidden" title="A última busca falhou"></span>
+          <span id="abaSessaoWings" class="aba-badge-sessao" title="Sessão não verificada"></span>
+        </span>
+        <span class="aba-nome">Wings</span>
+      </button>
+      <button class="aba" data-aba="ocr" role="tab" aria-selected="false">
+        <span class="aba-icone" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="none">
+            <rect x="2.6" y="2.6" width="14.8" height="14.8" rx="2.4" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M6.4 8.6h7.2M6.4 11.4h4.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="aba-nome">Captura</span>
+      </button>
+      <button class="aba" data-aba="atender" role="tab" aria-selected="false">
+        <span class="aba-icone" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="none">
+            <path d="M10 17.5s5.5-4.8 5.5-9a5.5 5.5 0 1 0-11 0c0 4.2 5.5 9 5.5 9Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+            <circle cx="10" cy="8.3" r="2" stroke="currentColor" stroke-width="1.4"/>
+          </svg>
+        </span>
+        <span class="aba-nome">Lojas</span>
+      </button>
+      <button class="aba" data-aba="emails" role="tab" aria-selected="false">
+        <span class="aba-icone" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="none">
+            <rect x="2.5" y="4.5" width="15" height="11" rx="1.6" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M3.2 5.3 10 11l6.8-5.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="aba-nome">E-mails</span>
+      </button>
+    </nav>
+
+    <!--
+      Destaca o popup numa janela de verdade, que nao fecha ao clicar fora.
+      A mesma popup.html aberta por chrome.windows.create — e o mesmo caminho
+      que o menu de contexto ja usa quando o openPopup() nao esta disponivel.
+      Escondido quando a pagina JA e a janela destacada.
+    -->
+    <button
+      id="destacarBtn"
+      class="tema-btn"
+      type="button"
+      title="Abrir numa janela que não fecha ao clicar fora"
+      aria-label="Abrir numa janela separada"
+    >
+      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M11.2 3.5h5.3v5.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M16.5 3.5 9.6 10.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M15.2 12v3.1a1.4 1.4 0 0 1-1.4 1.4H4.9a1.4 1.4 0 0 1-1.4-1.4V6.2a1.4 1.4 0 0 1 1.4-1.4H8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <button
+      id="temaBtn"
+      class="tema-btn"
+      type="button"
+      title="Alternar entre tema claro e escuro"
+      aria-label="Alternar entre tema claro e escuro"
+    >
+      <svg class="lua" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+      </svg>
+      <svg class="sol" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <circle cx="10" cy="10" r="3.6" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M10 2.2v1.9M10 15.9v1.9M17.8 10h-1.9M4.1 10H2.2M15.5 4.5l-1.3 1.3M5.8 14.2l-1.3 1.3M15.5 15.5l-1.3-1.3M5.8 5.8 4.5 4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </header>
+
+  <main class="container">
+
+    <!--
+      ABA COMEÇAR O DIA
+      A mesma tabela de src/dados/sistemas.js que diz onde cada sistema
+      mora e como checar a sessão dele serve esta tela: aqui ela vira a
+      lista do que sobe de uma vez no começo do expediente.
+
+      A extensão NÃO faz login: ela abre, reaproveita a aba que já existe,
+      agrupa tudo e diz onde falta você entrar.
+    -->
+    <section id="painel-dia" class="painel hidden" role="tabpanel">
+      <div class="secao-titulo">
+        <h2>Começar o dia</h2>
+        <div class="secao-acoes">
+          <span id="diaContador">—</span>
+          <button id="novoEnderecoBtn" class="link-btn" type="button">
+            Acrescentar
+          </button>
+          <button id="backupBtn" class="link-btn" type="button">
+            Outro PC
+          </button>
+        </div>
+      </div>
+
+      <p class="painel-texto">
+        Abre o que estiver marcado, na ordem da lista, sem repetir aba já
+        aberta. Arraste os cartões para reordenar.
+      </p>
+
+      <!--
+        Os sistemas da tabela (src/dados/sistemas.js) só se desmarcam: as
+        abas de consulta dependem deles. Só sai o que você acrescentou.
+      -->
+      <section id="formularioDia" class="formulario hidden">
+        <label for="diaNovoNome">Nome (opcional)</label>
+        <input
+          id="diaNovoNome"
+          type="text"
+          placeholder="Ex: Chamados"
+          autocomplete="off"
+        >
+
+        <label for="diaNovaUrl">Endereço</label>
+        <input
+          id="diaNovaUrl"
+          type="text"
+          placeholder="exemplo.com.br/pagina"
+          autocomplete="off"
+        >
+
+        <div class="form-botoes">
+          <button id="salvarEnderecoBtn" class="primary">Acrescentar</button>
+          <button id="cancelarEnderecoBtn" class="secondary">Cancelar</button>
+        </div>
+      </section>
+
+      <!--
+        LEVAR PARA OUTRO PC
+        Recolhido: é manutenção (máquina nova, backup antes de formatar), e
+        aberto ele comia 110px da lista numa aba de uso diário.
+
+        Macros, modelos e a lista já viajam sozinhos pelo storage.sync, mas
+        só entre máquinas logadas no MESMO navegador — o arquivo cobre o
+        resto. O código fica em src/popup/backup.js, por não ser sobre
+        começar o dia.
+      -->
+      <section id="blocoBackup" class="formulario hidden">
+        <p class="ferramenta-dica" style="margin-top: 0">
+          Um arquivo com seus macros, seus modelos de e-mail e esta lista.
+          Com a mesma conta do navegador nos dois PCs, as três já viajam
+          sozinhas — isto serve para máquina nova, outro navegador, ou uma
+          cópia antes de formatar.
+        </p>
+
+        <div class="form-botoes">
+          <button id="exportarTudoBtn" class="primary">Exportar tudo</button>
+          <button id="importarTudoBtn" class="secondary">Importar</button>
+          <input id="importarTudoInput" type="file" accept="application/json" hidden>
+        </div>
+
+        <p id="avisoBackup" class="ferramenta-aviso"></p>
+      </section>
+
+      <div id="diaSistemas" class="dia-lista"></div>
+
+      <button id="comecarDiaBtn" class="primary bloco">Começar o dia</button>
+
+      <p id="avisoDia" class="ferramenta-aviso"></p>
+
+      <p class="ferramenta-dica">
+        <span id="atalhoDia">o atalho</span> dispara a mesma rotina sem abrir
+        esta janela. Para trocar o comando, use a página de atalhos do
+        navegador, na aba Captura.
+      </p>
+
+    </section>
+
+    <!-- ABA MACROS -->
+    <section id="painel-macros" class="painel" role="tabpanel">
+      <div class="secao-titulo">
+        <h2>Macros</h2>
+        <div class="secao-acoes">
+          <span id="contador">0/0 comandos</span>
+          <button id="exportarMacrosBtn" class="link-btn" type="button">Exportar</button>
+          <button id="importarMacrosBtn" class="link-btn" type="button">Importar</button>
+          <input id="importarMacrosInput" type="file" accept="application/json" hidden>
+        </div>
+      </div>
+
+      <p id="avisoSync" class="ferramenta-aviso erro hidden">
+        Sem espaço para sincronizar: os macros estão salvos só neste
+        navegador.
+      </p>
+
+      <div class="barra">
+        <input
+          id="busca"
+          class="busca"
+          type="text"
+          placeholder="Buscar comando (ex: .ini)"
+          autocomplete="off"
+        >
+        <button id="novoBtn" class="primary">Criar</button>
+      </div>
+
+      <section id="formulario" class="formulario hidden">
+        <input type="hidden" id="macroId">
+
+        <label for="comando">Comando (ex: .ini)</label>
+        <input
+          id="comando"
+          type="text"
+          placeholder=".meucomando"
+          autocomplete="off"
+        >
+
+        <label for="resposta">Resultado</label>
+        <textarea
+          id="resposta"
+          placeholder="Texto que será inserido..."
+        ></textarea>
+
+        <div class="form-botoes">
+          <button id="salvarBtn" class="primary">Salvar</button>
+          <button id="cancelarBtn" class="secondary">Cancelar</button>
+        </div>
+      </section>
+
+      <section class="conteudo">
+        <ul id="lista" class="lista"></ul>
+
+        <div id="detalhe" class="detalhe vazio">
+          Selecione um comando para ver o resultado.
+        </div>
+      </section>
+    </section>
+
+    <!--
+      ABA CONSULTA
+      Eram duas abas ("Abrir AR" e "Abrir código") com o mesmo campo e o
+      mesmo placeholder, mudando só o destino. Viraram uma: um campo, dois
+      botões. A coluna (e não a linha) porque os rótulos são longos.
+    -->
+    <section id="painel-solicitacao" class="painel hidden" role="tabpanel">
+      <div class="secao-titulo">
+        <h2>Consulta</h2>
+      </div>
+
+      <div class="ferramenta-linha">
+        <input
+          id="codigoSolicitacao"
+          type="text"
+          placeholder="Código da solicitação"
+          autocomplete="off"
+        >
+      </div>
+
+      <div class="ferramenta-coluna">
+        <button id="abrirArBtn" class="primary">Abrir site da AR</button>
+        <button id="abrirSolicitacaoBtn" class="secondary">
+          Abrir solicitação
+        </button>
+      </div>
+
+      <p id="avisoSolicitacao" class="ferramenta-aviso"></p>
+      <p id="dicaSolicitacao" class="ferramenta-dica">
+        Também dá para selecionar o código em qualquer página e usar o botão
+        direito — os dois destinos estão lá. Com o código selecionado,
+        <span id="atalhoSolicitacao">o atalho</span> abre a solicitação
+        direto.
+      </p>
+    </section>
+
+    <!--
+      ABA DATABRICKS
+      As solicitações do cliente, por CPF/CNPJ. O painel do Databricks é um
+      app Streamlit sem API: quem fala o protocolo dele é o background.
+    -->
+    <section id="painel-databricks" class="painel hidden" role="tabpanel">
+      <div class="secao-titulo">
+        <h2>Databricks — solicitações do cliente</h2>
+      </div>
+
+      <div class="ferramenta-linha">
+        <input
+          id="documentoDatabricks"
+          type="text"
+          placeholder="CPF ou CNPJ do cliente"
+          autocomplete="off"
+        >
+        <button id="buscarDatabricksBtn" class="primary">Buscar</button>
+      </div>
+
+      <div id="historicoDatabricks" class="historico-lista hidden"></div>
+
+      <p id="avisoDatabricks" class="ferramenta-aviso"></p>
+
+      <div id="resultadoDatabricks" class="hidden"></div>
+    </section>
+
+    <!--
+      ABA S.DEAL
+      Busca de voucher no sdeal.soluti.com.br. A tela só manda o número;
+      a sequência de requisições (e a sessão logada) ficam no background.
+    -->
+    <section id="painel-sdeal" class="painel hidden" role="tabpanel">
+      <div class="secao-titulo">
+        <h2>S.Deal — buscar voucher</h2>
+      </div>
+
+      <div class="ferramenta-linha">
+        <input
+          id="codigoVoucherSDeal"
+          type="text"
+          placeholder="Número do voucher"
+          autocomplete="off"
+        >
+        <button id="buscarVoucherBtn" class="primary">Buscar</button>
+      </div>
+
+      <div id="historicoSDeal" class="historico-lista hidden"></div>
+
+      <p id="avisoSDeal" class="ferramenta-aviso"></p>
+
+      <div id="resultadoSDeal" class="resultado-consulta hidden">
+        <div class="resultado-cabecalho">
+          <span id="sdealSituacao" class="resultado-titulo">—</span>
+          <button id="copiarSDealBtn" class="link-btn" type="button">Copiar</button>
+        </div>
+        <div id="sdealLinhas" class="linhas-cv"></div>
+      </div>
+
+      <p class="ferramenta-dica">
+        A primeira busca pode abrir uma aba do S.Deal em segundo plano para
+        usar sua sessão logada — se você não estiver logado, faça login uma
+        vez e busque de novo.
+      </p>
+    </section>
+
+    <!--
+      ABA GESTÃO+
+      Dois caminhos para a mesma tela de pedido: pelo CPF/CNPJ do parceiro
+      (que lista as vendas dele) ou direto pelo número do pedido.
+    -->
+    <section id="painel-gestao" class="painel hidden" role="tabpanel">
+      <div class="secao-titulo">
+        <h2>GO — histórico do parceiro</h2>
+      </div>
+
+      <div class="ferramenta-linha">
+        <input
+          id="documentoGestao"
+          type="text"
+          placeholder="CPF ou CNPJ do parceiro"
+          autocomplete="off"
+        >
+        <button id="buscarGestaoBtn" class="primary">Buscar</button>
+      </div>
+
+      <div id="historicoGestaoDocumento" class="historico-lista hidden"></div>
+
+      <p id="avisoGestao" class="ferramenta-aviso"></p>
+
+      <div class="gestao-divisor"><span>ou</span></div>
+
+      <div class="ferramenta-linha">
+        <input
+          id="numeroPedidoGestao"
+          type="text"
+          placeholder="Número do pedido"
+          autocomplete="off"
+        >
+        <button id="buscarPedidoNumeroBtn" class="secondary">Buscar pedido</button>
+      </div>
+
+      <div id="historicoGestaoPedido" class="historico-lista hidden"></div>
+
+      <p id="avisoBuscaPedido" class="ferramenta-aviso"></p>
+
+      <div id="resultadoBuscaPedido" class="resultado-consulta hidden">
+        <div class="resultado-cabecalho">
+          <span class="resultado-titulo">Pedidos encontrados</span>
+        </div>
+        <div id="listaBuscaPedido" class="lista-registros"></div>
+      </div>
+
+      <div id="resultadoGestao" class="resultado-consulta hidden">
+        <div class="resultado-cabecalho">
+          <span id="gestaoParceiroNome" class="resultado-titulo">—</span>
+          <button id="copiarGestaoBtn" class="link-btn" type="button">Copiar</button>
+        </div>
+        <div class="linhas-cv">
+          <div class="linha-cv">
+            <span class="linha-cv-rotulo">E-mail</span>
+            <span id="gestaoParceiroEmail" class="linha-cv-valor">—</span>
+          </div>
+        </div>
+        <div id="gestaoMovimentacoes" class="lista-registros"></div>
+      </div>
+
+      <div id="detalhePedido" class="cartao-resultado hidden">
+        <div class="resultado-cabecalho">
+          <span id="pedidoTitulo" class="resultado-titulo">—</span>
+          <div class="gestao-pedido-acoes">
+            <label
+              class="copiar-ao-abrir-toggle"
+              title="Copia o pedido para a área de transferência assim que ele é aberto"
+            >
+              <input type="checkbox" id="copiarPedidoAoAbrir">
+              Copiar ao abrir
+            </label>
+            <button id="copiarPedidoBtn" class="link-btn" type="button">Copiar</button>
+            <button id="fecharPedidoBtn" class="link-btn" type="button">Fechar</button>
+          </div>
+        </div>
+
+        <div id="pedidoBadges" class="gestao-pedido-badges"></div>
+
+        <div id="pedidoDados" class="linhas-cv"></div>
+
+        <div class="gestao-pedido-secao-titulo">Itens</div>
+        <div id="pedidoItens" class="gestao-pedido-itens"></div>
+
+        <div class="linhas-cv gestao-pedido-totais">
+          <div class="linha-cv">
+            <span class="linha-cv-rotulo">Desconto</span>
+            <span id="pedidoDesconto" class="linha-cv-valor">—</span>
+          </div>
+          <div class="linha-cv">
+            <span class="linha-cv-rotulo">Frete</span>
+            <span id="pedidoFrete" class="linha-cv-valor">—</span>
+          </div>
+          <div class="linha-cv">
+            <span class="linha-cv-rotulo">Valor retido</span>
+            <span id="pedidoRetido" class="linha-cv-valor">—</span>
+          </div>
+          <div class="linha-cv">
+            <span class="linha-cv-rotulo">Total</span>
+            <span id="pedidoTotal" class="linha-cv-valor gestao-pedido-total-destaque">—</span>
+          </div>
+        </div>
+
+        <div class="gestao-pedido-secao-titulo">Histórico / situação</div>
+        <div id="pedidoHistorico" class="gestao-pedido-historico"></div>
+      </div>
+
+      <p id="avisoPedido" class="ferramenta-aviso"></p>
+
+      <p class="ferramenta-dica">
+        A primeira busca pode abrir uma aba do GO em segundo plano para
+        usar sua sessão logada — se você não estiver logado, faça login uma
+        vez e busque de novo.
+      </p>
+    </section>
+
+    <!--
+      ABA WINGS
+      Assinatura e autenticações no topo (é o que quase sempre responde a
+      pergunta); o perfil completo vem recolhido, porque é muita linha para
+      a altura do popup.
+    -->
+    <section id="painel-wings" class="painel hidden" role="tabpanel">
+      <div class="secao-titulo">
+        <h2>Wings — assinatura e autenticações</h2>
+      </div>
+
+      <div class="ferramenta-linha">
+        <input
+          id="documentoWings"
+          type="text"
+          placeholder="CPF ou CNPJ do usuário"
+          autocomplete="off"
+        >
+        <button id="buscarWingsBtn" class="primary">Buscar</button>
+      </div>
+
+      <div id="historicoWings" class="historico-lista hidden"></div>
+
+      <p id="avisoWings" class="ferramenta-aviso"></p>
+
+      <div id="resultadoWings" class="resultado-consulta hidden">
+        <div class="resultado-cabecalho">
+          <span id="wingsUsuarioNome" class="resultado-titulo">—</span>
+          <button id="copiarWingsBtn" class="link-btn" type="button">Copiar</button>
+        </div>
+        <div id="wingsLinhas" class="linhas-cv"></div>
+
+        <div class="wings-secao">
+          <button
+            class="wings-secao-cabecalho"
+            type="button"
+            aria-expanded="false"
+            data-alvo="wingsUsuario"
+          >
+            <span class="wings-secao-titulo">Usuário</span>
+            <svg class="wings-secao-seta" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="m5.5 8 4.5 4.5L14.5 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="wingsUsuario" class="linhas-cv wings-secao-conteudo hidden"></div>
+        </div>
+
+        <div class="wings-secao">
+          <button
+            class="wings-secao-cabecalho"
+            type="button"
+            aria-expanded="false"
+            data-alvo="wingsValidade"
+          >
+            <span class="wings-secao-titulo">Validade</span>
+            <svg class="wings-secao-seta" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="m5.5 8 4.5 4.5L14.5 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="wingsValidade" class="linhas-cv wings-secao-conteudo hidden"></div>
+        </div>
+
+        <div class="wings-secao">
+          <button
+            class="wings-secao-cabecalho"
+            type="button"
+            aria-expanded="false"
+            data-alvo="wingsEmissoes"
+          >
+            <span class="wings-secao-titulo">
+              Emissão<span id="wingsEmissoesContagem" class="wings-secao-contagem"></span>
+            </span>
+            <svg class="wings-secao-seta" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="m5.5 8 4.5 4.5L14.5 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="wingsEmissoes" class="wings-secao-conteudo hidden"></div>
+        </div>
+
+        <div class="wings-secao">
+          <button
+            class="wings-secao-cabecalho"
+            type="button"
+            aria-expanded="false"
+            data-alvo="wingsEventos"
+          >
+            <span class="wings-secao-titulo">
+              Eventos<span id="wingsEventosContagem" class="wings-secao-contagem"></span>
+            </span>
+            <svg class="wings-secao-seta" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="m5.5 8 4.5 4.5L14.5 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="wingsEventos" class="lista-registros wings-secao-conteudo hidden"></div>
+        </div>
+      </div>
+
+      <p class="ferramenta-dica">
+        A primeira busca pode abrir uma aba do Wings Portal em segundo plano
+        para usar sua sessão logada — se você não estiver logado, faça login
+        uma vez e busque de novo.
+      </p>
+    </section>
+
+    <!-- ABA CAPTURA (OCR) -->
+    <section id="painel-ocr" class="painel hidden" role="tabpanel">
+      <div class="secao-titulo">
+        <h2>Captura de texto da tela</h2>
+      </div>
+      <p class="painel-texto">
+        Use o botão abaixo ou o atalho de teclado e arraste sobre a área com
+        o texto. O que for lido vai direto para a área de transferência.
+        Em imagens pequenas ou tortas, o botão direito tem "Ampliar imagem"
+        — dá para girar e aumentar o contraste antes de selecionar.
+      </p>
+
+      <div class="atalho-card">
+        <span class="atalho-rotulo">Comando atual</span>
+        <span id="atalhoValor" class="atalho-valor">—</span>
+      </div>
+
+      <button id="capturarAgoraBtn" class="primary bloco">
+        Capturar agora
+      </button>
+      <button id="trocarAtalhoBtn" class="secondary bloco">Trocar atalho</button>
+      <p id="avisoOcr" class="ferramenta-aviso"></p>
+
+      <p class="ferramenta-dica">
+        A troca é feita na página de atalhos do navegador, por segurança. O
+        botão copia o endereço; cole na barra de endereços e ajuste o comando
+        "Extrair texto da tela".
+      </p>
+    </section>
+
+    <!--
+      ABA ONDE ATENDER
+      Lojas e parceiros respondem à mesma pergunta ("para onde eu mando essa
+      pessoa?"), e o menu de contexto já as trata como um grupo só. O controle
+      segmentado troca a lista; cada escopo mantém a própria busca e seleção.
+    -->
+    <section id="painel-atender" class="painel hidden" role="tabpanel">
+      <div class="escopo">
+        <button id="escopoLojas" class="escopo-btn ativo" type="button">
+          Soluti
+        </button>
+        <button id="escopoNacional" class="escopo-btn" type="button">
+          Parceiro nacional
+        </button>
+        <button id="escopoInternacional" class="escopo-btn" type="button">
+          Internacional
+        </button>
+      </div>
+
+      <div id="bloco-lojas" class="bloco-escopo">
+        <div class="barra">
+          <input
+            id="buscaLoja"
+            class="busca"
+            type="text"
+            placeholder="Buscar loja, cidade, bairro..."
+            autocomplete="off"
+          >
+          <select id="filtroUfLoja" class="filtro-uf">
+            <option value="">UF</option>
+          </select>
+        </div>
+
+        <div class="parceiros-info lojas-info">
+          <div class="info-resumo">
+            <span id="lojasContador">—</span>
+            <span id="lojasCarimbo" class="carimbo"></span>
+            <span id="lojasSelecao" class="selecao-tag hidden"></span>
+          </div>
+          <div class="info-acoes">
+            <button id="limparSelecaoLojas" class="link-btn hidden" type="button">
+              Limpar
+            </button>
+            <button id="copiarTodasLojas" class="link-btn" type="button">
+              Copiar todas
+            </button>
+            <button id="atualizarLojasBtn" class="link-btn" type="button">
+              Atualizar
+            </button>
+          </div>
+        </div>
+
+        <ul id="listaLojas" class="lista-parceiros"></ul>
+      </div>
+
+      <div id="bloco-parceiros" class="bloco-escopo hidden">
+        <div class="barra">
+          <input
+            id="buscaParceiro"
+            class="busca"
+            type="text"
+            placeholder="Buscar AR, unidade, município, bairro, telefone..."
+            autocomplete="off"
+          >
+          <select id="filtroUf" class="filtro-uf">
+            <option value="">UF</option>
+          </select>
+        </div>
+
+        <div class="parceiros-info lojas-info">
+          <div class="info-resumo">
+            <span id="parceirosContador">—</span>
+            <span id="parceirosSelecao" class="selecao-tag hidden"></span>
+          </div>
+          <div class="info-acoes">
+            <button id="limparSelecaoParceiros" class="link-btn hidden" type="button">
+              Limpar
+            </button>
+            <button id="copiarTodasParceiros" class="link-btn" type="button">
+              Copiar todas
+            </button>
+          </div>
+        </div>
+
+        <ul id="listaParceiros" class="lista-parceiros"></ul>
+      </div>
+    </section>
+
+    <!--
+      ABA E-MAILS
+      Dois blocos no mesmo painel, como lojas/parceiros: "Enviar" monta e
+      dispara a mensagem; "Modelos" cuida dos textos, com as mesmas duas
+      origens dos macros — os da equipe e os criados pelo usuario.
+    -->
+    <section id="painel-emails" class="painel hidden" role="tabpanel">
+      <div class="escopo">
+        <button id="escopoEnviarEmail" class="escopo-btn ativo" type="button">
+          Enviar
+        </button>
+        <button id="escopoModelosEmail" class="escopo-btn" type="button">
+          Modelos
+        </button>
+      </div>
+
+      <div id="bloco-enviar-email" class="bloco-escopo">
+        <div class="campo-email">
+          <label for="tipoEmail" class="campo-rotulo">Modelo</label>
+          <select id="tipoEmail"></select>
+        </div>
+
+        <div class="campo-email">
+          <label for="destinatarioEmail" class="campo-rotulo">
+            Destinatário
+          </label>
+          <input
+            id="destinatarioEmail"
+            type="email"
+            placeholder="nome@empresa.com"
+            autocomplete="off"
+          >
+        </div>
+
+        <!--
+          O Cco nao se edita aqui: ele e do modelo, e se define junto do
+          assunto e do corpo, na sub-aba "Modelos". Aqui ele aparece duas
+          vezes so para conferencia — na previa, logo abaixo, e de novo na
+          confirmacao. Editar nesta tela mudava o Cco de todos os envios
+          futuros, que era o oposto de "um por tipo de e-mail".
+        -->
+        <div id="camposExtrasEmail"></div>
+
+        <button id="enviarEmailBtn" class="primary bloco" disabled>
+          Enviar e-mail
+        </button>
+
+        <div id="confirmarEmailCard" class="confirmar-email hidden">
+          <p class="confirmar-email-texto">
+            Confirmar envio de <strong id="confirmarEmailTipo"></strong> para
+            <strong id="confirmarEmailPara"></strong>?
+          </p>
+          <p id="confirmarEmailCco" class="confirmar-email-cco hidden">
+            Com cópia oculta para
+            <strong id="confirmarEmailCcoEndereco"></strong>.
+          </p>
+          <div class="confirmar-email-botoes">
+            <button id="confirmarEmailNaoBtn" class="secondary" type="button">
+              Cancelar
+            </button>
+            <button id="confirmarEmailSimBtn" class="primary" type="button">
+              Confirmar e enviar
+            </button>
+          </div>
+        </div>
+
+        <p id="avisoEmail" class="ferramenta-aviso"></p>
+
+        <div class="detalhe previa-email">
+          <span class="previa-email-rotulo">Prévia do rascunho</span>
+
+          <div id="previaEmailCcoCampo" class="previa-email-campo hidden">
+            <b>Cco</b>
+            <div id="previaEmailCco" class="previa-email-assunto"></div>
+          </div>
+
+          <div class="previa-email-campo">
+            <b>Assunto</b>
+            <div id="previaEmailAssunto" class="previa-email-assunto"></div>
+          </div>
+
+          <div class="previa-email-campo">
+            <b>Corpo</b>
+            <div id="previaEmailCorpo" class="resposta"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="bloco-modelos-email" class="bloco-escopo hidden">
+        <div class="secao-titulo">
+          <h2>Modelos</h2>
+          <div class="secao-acoes">
+            <span id="contadorModelos">0 modelos</span>
+          </div>
+        </div>
+
+        <p id="avisoSyncEmails" class="ferramenta-aviso erro hidden">
+          Sem espaço para sincronizar: os modelos estão salvos só neste
+          navegador.
+        </p>
+
+        <!--
+          Aviso de uma vez so, mostrado depois que o Cco fixo antigo virou
+          Cco de modelo. Fica ate o atendente clicar em "Entendi": um
+          endereco que deixou de ser copiado nao pode sumir em silencio.
+        -->
+        <div id="noticiaCco" class="noticia hidden">
+          <p id="noticiaCcoTexto"></p>
+          <button id="noticiaCcoOkBtn" class="secondary" type="button">
+            Entendi
+          </button>
+        </div>
+
+        <div class="barra">
+          <button id="novoModeloBtn" class="primary">Criar modelo</button>
+        </div>
+
+        <section id="formularioModelo" class="formulario hidden">
+          <input type="hidden" id="modeloId">
+
+          <label for="modeloNome">Nome do modelo</label>
+          <input
+            id="modeloNome"
+            type="text"
+            placeholder="Ex: Acesso remoto"
+            autocomplete="off"
+          >
+
+          <label for="modeloAssunto">Assunto</label>
+          <input
+            id="modeloAssunto"
+            type="text"
+            placeholder="Assunto do e-mail"
+            autocomplete="off"
+          >
+
+          <label for="modeloCorpo">Corpo</label>
+          <textarea
+            id="modeloCorpo"
+            placeholder="Texto do e-mail..."
+          ></textarea>
+
+          <label for="modeloCco">Cco (opcional)</label>
+          <input
+            id="modeloCco"
+            type="email"
+            placeholder="deixe vazio para este modelo não copiar ninguém"
+            autocomplete="off"
+          >
+
+          <p class="ferramenta-dica">
+            O <b>Cco</b> vale só para este modelo: todo e-mail enviado com
+            ele copia esse endereço em cópia oculta. O endereço aparece na
+            prévia e na confirmação antes de cada envio.
+          </p>
+
+          <p class="ferramenta-dica">
+            Escreva <b>{assim}</b> para criar um campo a preencher na hora do
+            envio — <b>{codigo}</b> vira um campo "codigo". O marcador
+            <b>{saudacao}</b> vira "Bom dia", "Boa tarde" ou "Boa noite"
+            sozinho, pelo horário.
+          </p>
+
+          <div class="form-botoes">
+            <button id="salvarModeloBtn" class="primary">Salvar</button>
+            <button id="cancelarModeloBtn" class="secondary">Cancelar</button>
+          </div>
+        </section>
+
+        <ul id="listaModelos" class="lista lista-modelos"></ul>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="rodape">
+    <span class="rodape-nome">
+      Apoio Soluti <span class="ponto">•</span> <span id="versao">v4.0</span>
+    </span>
+    <span class="rodape-credito">Suporte B2C</span>
+  </footer>
+
+  <!-- A ORDEM IMPORTA. Sao scripts classicos: todos dividem o mesmo escopo,
+       e o que roda no topo de um arquivo so enxerga o que ja foi carregado.
+         1. dados   — as tabelas fixas, que os arquivos abaixo leem na partida
+         2. comum   — leitura/gravacao no storage, dividida com o content script
+         3. ui      — $() e as pecas de tela que as abas usam
+         4. abas    — uma por aba da tela; a casca da aba com escopo
+                      (aba-atender.js) antes dos escopos dela
+         5. popup   — a casca e as chamadas de partida, POR ULTIMO -->
+  <script src="../dados/sistemas.js"></script>
+  <script src="../dados/lojas.js"></script>
+  <script src="../dados/emails-equipe.js"></script>
+  <script src="../dados/macros-equipe.js"></script>
+
+  <script src="../comum/rotina-dia.js"></script>
+  <script src="../comum/macros.js"></script>
+  <script src="../comum/emails.js"></script>
+
+  <script src="ui.js"></script>
+
+  <script src="aba-dia.js"></script>
+
+  <script src="aba-macros.js"></script>
+
+  <script src="aba-consulta-codigo.js"></script>
+
+  <script src="buscas.js"></script>
+  <script src="aba-databricks.js"></script>
+  <script src="aba-sdeal.js"></script>
+  <script src="aba-gestao.js"></script>
+  <script src="aba-wings.js"></script>
+
+  <script src="aba-ocr.js"></script>
+  <script src="aba-atender.js"></script>
+  <script src="aba-atender-lojas.js"></script>
+  <script src="aba-atender-parceiros.js"></script>
+  <script src="aba-emails.js"></script>
+
+  <script src="backup.js"></script>
+
+  <script src="sessao.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

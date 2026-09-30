@@ -1,0 +1,2121 @@
+/* ============================================================
+   Tokens de cor. Toda cor da interface sai daqui: e o que permite
+   o tema escuro abaixo trocar so estas linhas, sem tocar em
+   nenhum componente.
+   ============================================================ */
+
+:root {
+  color-scheme: light dark;
+
+  --verde: #0f7a3f;
+  --verde-solido: #0f7a3f;
+  --verde-solido-hover: #0b5c2f;
+  --verde-escuro: #0b5c2f;
+  --verde-claro: #eef8f1;
+  --verde-borda: #c3e6cf;
+  --verde-hover: #f3f8f5;
+  --verde-selecao: #e4f3ea;
+  --verde-cartao: #fbfefc;
+  --verde-acao: #e6efe9;
+  --texto: #1a2027;
+  --texto-medio: #3d4750;
+  --texto-rotulo: #4a5560;
+  --texto-suave: #6b7480;
+  --texto-fraco: #9aa3ad;
+  --texto-tag: #8a939d;
+  --icone: #5b656f;
+  --borda: #e3e8ee;
+  --borda-fraca: #f0f2f5;
+  --fundo: #f4f6f9;
+  --superficie: #ffffff;
+  --superficie-2: #eef1f4;
+  --superficie-3: #f2f5f8;
+  --superficie-4: #fafbfc;
+  --hover: #f7f9fb;
+  --pastilha-ativa: #ffffff;
+  --neutro-bg: #f1f4f6;
+  --neutro-texto: #5c6670;
+  --neutro-borda: #e3e8ee;
+  --vermelho: #b42318;
+  --vermelho-bg: #fdeceb;
+  --vermelho-borda: #f4c9c5;
+  --vermelho-hover: #ffe1de;
+
+  --sombra-pastilha: 0 1px 2px rgba(16, 24, 32, 0.08);
+}
+
+/* Segue o tema do navegador. O Edge/Chrome no escuro deixa de dar o
+   flash branco a cada abertura do popup. */
+/* Tres estados, como o navegador. Sem escolha, segue o sistema; com
+   escolha, ela ganha — nos dois sentidos. Por isso o :not() aqui e a
+   copia solta logo abaixo: uma escolha "claro" precisa vencer um sistema
+   escuro, e uma escolha "escuro" precisa vencer um sistema claro. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) {
+    --verde: #4fbd7f;
+    --verde-solido: #14874a;
+    --verde-solido-hover: #17a259;
+    --verde-escuro: #8ad9ac;
+    --verde-claro: #1b2f24;
+    --verde-borda: #2e4d3a;
+    --verde-hover: #22302a;
+    --verde-selecao: #24382c;
+    --verde-cartao: #1c2622;
+    --verde-acao: #26332c;
+    --texto: #e3e8ea;
+    --texto-medio: #c2ccd0;
+    --texto-rotulo: #a4b0b5;
+    --texto-suave: #8b989e;
+    --texto-fraco: #6f7d83;
+    --texto-tag: #7c8a90;
+    --icone: #9aa7ac;
+    --borda: #2c353a;
+    --borda-fraca: #232b2f;
+    --fundo: #171c1f;
+    --superficie: #1e2529;
+    --superficie-2: #262f34;
+    --superficie-3: #232b2f;
+    --superficie-4: #1a2125;
+    --hover: #262f34;
+    --pastilha-ativa: #323c42;
+    --neutro-bg: #262f34;
+    --neutro-texto: #a4b0b5;
+    --neutro-borda: #333e43;
+    --vermelho: #f0897a;
+    --vermelho-bg: #34211f;
+    --vermelho-borda: #4a2b27;
+    --vermelho-hover: #4a2b27;
+
+    --sombra-pastilha: 0 0 0 1px rgba(255, 255, 255, 0.07);
+  }
+}
+
+:root[data-tema="escuro"] {
+  --verde: #4fbd7f;
+  --verde-solido: #14874a;
+  --verde-solido-hover: #17a259;
+  --verde-escuro: #8ad9ac;
+  --verde-claro: #1b2f24;
+  --verde-borda: #2e4d3a;
+  --verde-hover: #22302a;
+  --verde-selecao: #24382c;
+  --verde-cartao: #1c2622;
+  --verde-acao: #26332c;
+  --texto: #e3e8ea;
+  --texto-medio: #c2ccd0;
+  --texto-rotulo: #a4b0b5;
+  --texto-suave: #8b989e;
+  --texto-fraco: #6f7d83;
+  --texto-tag: #7c8a90;
+  --icone: #9aa7ac;
+  --borda: #2c353a;
+  --borda-fraca: #232b2f;
+  --fundo: #171c1f;
+  --superficie: #1e2529;
+  --superficie-2: #262f34;
+  --superficie-3: #232b2f;
+  --superficie-4: #1a2125;
+  --hover: #262f34;
+  --pastilha-ativa: #323c42;
+  --neutro-bg: #262f34;
+  --neutro-texto: #a4b0b5;
+  --neutro-borda: #333e43;
+  --vermelho: #f0897a;
+  --vermelho-bg: #34211f;
+  --vermelho-borda: #4a2b27;
+  --vermelho-hover: #4a2b27;
+
+  --sombra-pastilha: 0 0 0 1px rgba(255, 255, 255, 0.07);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  width: 620px;
+  height: 580px;
+  margin: 0;
+  overflow: hidden;
+  color: var(--texto);
+  background: var(--fundo);
+  font-family: "Segoe UI", -apple-system, Roboto, Arial, sans-serif;
+  font-size: 13px;
+}
+
+/* Como popup da barra, o navegador desenha a caixa do tamanho do documento —
+   dai os 620x580 fixos acima. Destacada em janela, quem manda no tamanho e a
+   janela, e o documento tem de acompanhar: com a medida fixa sobrava fundo
+   em volta e o conteudo nao usava o espaco de sobra. */
+:root[data-janela="destacada"] {
+  height: 100%;
+  overflow: auto;
+}
+
+:root[data-janela="destacada"] body {
+  width: 100%;
+  height: 100%;
+  /* abaixo da largura de projeto a barra de abas nao cabe; ai e melhor
+     rolar do que espremer */
+  min-width: 620px;
+  min-height: 420px;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--verde);
+  outline-offset: 1px;
+}
+
+/* Cabecalho */
+
+.topo {
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 0;
+  padding: 0 12px 0 14px;
+  background: var(--superficie);
+  border-bottom: 1px solid var(--borda);
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-shrink: 0;
+  padding-right: 15px;
+  margin-right: 7px;
+  border-right: 1px solid var(--borda-fraca);
+}
+
+.marca-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  color: white;
+  background: var(--verde-solido);
+  border-radius: 8px;
+}
+
+/* Escondido desde que as consultas viraram quatro abas: com nove abas em
+   620px, os 85px do nome deixavam ~8px para o rotulo de cada aba, e o
+   degrade apagava todos. So o icone, e as abas voltam a ser legiveis. O
+   nome continua no titulo da janela e no rodape. */
+.marca-nome {
+  display: none;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.1px;
+  white-space: nowrap;
+}
+
+
+/* Corpo */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  padding: 16px 18px 18px;
+}
+
+.secao-titulo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 11px;
+}
+
+.secao-titulo h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.secao-titulo span {
+  color: var(--texto-suave);
+  font-size: 12px;
+}
+
+.secao-acoes {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.barra {
+  display: flex;
+  gap: 9px;
+  margin-bottom: 12px;
+}
+
+.busca {
+  flex: 1;
+  height: 38px;
+  padding: 0 12px;
+  color: var(--texto);
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  outline: none;
+}
+
+.busca::placeholder {
+  color: var(--texto-fraco);
+}
+
+.busca:focus,
+.formulario input:focus,
+.formulario textarea:focus {
+  border-color: var(--verde);
+}
+
+/* Botoes */
+
+.primary,
+.secondary,
+.acao {
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.primary {
+  padding: 0 18px;
+  height: 38px;
+  color: white;
+  background: var(--verde-solido);
+  font-weight: 600;
+}
+
+.primary:hover {
+  background: var(--verde-solido-hover);
+}
+
+.secondary {
+  height: 38px;
+  padding: 0 18px;
+  color: var(--texto);
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  font-weight: 600;
+}
+
+.secondary:hover {
+  background: var(--hover);
+}
+
+/* Formulario */
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex-shrink: 0;
+  padding: 14px;
+  margin-bottom: 12px;
+  background: var(--verde-claro);
+  border: 1px solid var(--verde-borda);
+  border-radius: 10px;
+}
+
+.formulario.hidden {
+  display: none;
+}
+
+.formulario label {
+  margin-top: 5px;
+  color: var(--texto-rotulo);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.formulario input,
+.formulario textarea {
+  width: 100%;
+  padding: 9px 11px;
+  color: var(--texto);
+  background: var(--superficie);
+  border: 1px solid var(--verde-borda);
+  border-radius: 8px;
+  outline: none;
+}
+
+.formulario textarea {
+  min-height: 86px;
+  line-height: 1.45;
+  resize: vertical;
+}
+
+.form-botoes {
+  display: flex;
+  gap: 9px;
+  margin-top: 10px;
+}
+
+.form-botoes button {
+  flex: 1;
+}
+
+/* Lista e detalhe */
+
+.conteudo {
+  display: flex;
+  gap: 11px;
+  flex: 1;
+  min-height: 0;
+}
+
+.lista {
+  width: 42%;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+}
+
+.grupo {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 8px 12px;
+  color: var(--texto-rotulo);
+  background: var(--superficie-3);
+  border-bottom: 1px solid var(--borda);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  min-height: 40px;
+  padding: 7px 11px;
+  border-bottom: 1px solid var(--borda-fraca);
+  cursor: pointer;
+}
+
+.item:hover {
+  background: var(--verde-hover);
+}
+
+.item.ativo {
+  color: white;
+  background: var(--verde-solido);
+  border-bottom-color: var(--verde-solido);
+}
+
+.comando {
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.acoes {
+  display: none;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.item:hover .acoes,
+.item.ativo .acoes {
+  display: flex;
+}
+
+.acao {
+  padding: 5px 8px;
+  color: var(--texto-medio);
+  background: var(--superficie-2);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.item.ativo .acao {
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.acao.excluir {
+  color: var(--vermelho);
+}
+
+.acao.copiar {
+  padding: 6px 11px;
+}
+
+.lista-vazia {
+  padding: 18px 14px;
+  color: var(--texto-suave);
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.detalhe {
+  flex: 1;
+  min-width: 0;
+  padding: 14px;
+  overflow-y: auto;
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+}
+
+.detalhe.vazio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: var(--texto-suave);
+  font-size: 12px;
+  text-align: center;
+}
+
+.detalhe-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
+  padding-bottom: 10px;
+  margin-bottom: 11px;
+  border-bottom: 1px solid var(--borda-fraca);
+}
+
+.detalhe-topo strong {
+  color: var(--verde);
+  font-size: 13px;
+}
+
+.resposta {
+  font-size: 13px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.tag-substituido {
+  flex-shrink: 0;
+  color: var(--texto-tag);
+  font-size: 10px;
+  font-style: italic;
+}
+
+.item.ativo .tag-substituido {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.detalhe-titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.detalhe-acoes {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.selo {
+  padding: 2px 7px;
+  color: var(--verde-escuro);
+  background: var(--verde-claro);
+  border: 1px solid var(--verde-borda);
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.nota {
+  margin: 12px 0 0;
+  padding: 9px 11px;
+  color: var(--texto-rotulo);
+  background: var(--superficie-4);
+  border-left: 3px solid var(--verde-borda);
+  border-radius: 0 6px 6px 0;
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+/* Rodape */
+
+.rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+  padding: 7px 18px;
+  background: var(--superficie);
+  border-top: 1px solid var(--borda);
+}
+
+.rodape-nome {
+  color: var(--texto-rotulo);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.rodape .ponto {
+  color: var(--verde);
+}
+
+.rodape-credito {
+  color: var(--texto-suave);
+  font-size: 10.5px;
+}
+
+/* Botoes de icone da lista */
+
+.acao.icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 27px;
+  height: 27px;
+  padding: 0;
+  color: var(--icone);
+  background: transparent;
+  border-radius: 7px;
+}
+
+.acao.icone:hover {
+  color: var(--verde-escuro);
+  background: var(--verde-acao);
+}
+
+.acao.icone.excluir:hover {
+  color: var(--vermelho);
+  background: var(--vermelho-bg);
+}
+
+.item.ativo .acao.icone {
+  color: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.item.ativo .acao.icone:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.item.ativo .acao.icone.excluir:hover {
+  color: var(--vermelho-hover);
+  background: rgba(0, 0, 0, 0.18);
+}
+
+/* Abas */
+
+.abas {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  gap: 2px;
+}
+
+.aba {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 13px 6px 11px;
+  color: var(--texto-suave);
+  background: transparent;
+  border: 0;
+  border-bottom: 2.5px solid transparent;
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.aba:hover {
+  color: var(--texto);
+}
+
+.aba.ativa {
+  color: var(--verde);
+  border-bottom-color: var(--verde);
+  font-weight: 600;
+}
+
+/* Ativa tambem entra na disputa por espaco no hover, senao ela fica
+   presa no tamanho minimo enquanto a vizinha cresce. */
+.aba.ativa:hover {
+  flex-grow: 4;
+}
+
+.aba-icone {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  width: 17px;
+  height: 17px;
+}
+
+.aba-icone svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* Pontinho vermelho: acende quando a ultima busca da aba falhou (ex:
+   sessao expirada), pra sobreviver a troca de aba sem que o aviso de
+   erro (que fica so no painel visivel) passe despercebido. Some sozinho
+   quando o usuario volta pra aba ou quando uma busca da certo. */
+.aba-badge-erro {
+  position: absolute;
+  top: -3px;
+  right: -4px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--vermelho);
+  border: 1.5px solid var(--fundo-app, var(--fundo));
+}
+
+.aba-badge-erro.hidden {
+  display: none;
+}
+
+/* Indicador de sessao: verde quando a extensao ja confirmou uma sessao
+   ativa naquele sistema (cookie de login presente), cinza quando nao ha
+   sessao ou ela ainda nao foi verificada. So aparece nas abas que
+   dependem de login (S.Deal, Gestao+, Wings). */
+.aba-badge-sessao {
+  position: absolute;
+  bottom: -3px;
+  right: -4px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--texto-suave);
+  opacity: 0.45;
+  border: 1.5px solid var(--fundo-app, var(--fundo));
+}
+
+.aba-badge-sessao.sessao-ok {
+  background: var(--verde-solido);
+  opacity: 1;
+}
+
+/* Nome da aba. Em repouso mostra so uma fatia (o comeco da palavra ja
+   ajuda a reconhecer) e o texto se apaga num degrade em vez de cortar
+   seco. No hover, a aba ganha espaco (flex-grow acima) e o nome usa
+   esse espaco extra, sem degrade. */
+.aba-nome {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 34px;
+  -webkit-mask-image: linear-gradient(to right, #000 65%, transparent 100%);
+  mask-image: linear-gradient(to right, #000 65%, transparent 100%);
+  transition: max-width 0.2s ease;
+}
+
+.aba:hover .aba-nome {
+  max-width: 110px;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+/* Alternador de tema. O icone mostra o tema para o qual o clique leva,
+   e quem decide qual aparecer e o mesmo trio de regras dos tokens. */
+
+.tema-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  flex-shrink: 0;
+  width: 30px;
+  height: 28px;
+  margin-left: 6px;
+  padding: 0;
+  color: var(--texto-suave);
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.tema-btn:hover {
+  color: var(--texto);
+  background: var(--superficie-2);
+}
+
+.tema-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* claro em vigor: mostra a lua, porque o clique leva ao escuro */
+.tema-btn .sol { display: none; }
+.tema-btn .lua { display: block; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) .tema-btn .lua { display: none; }
+  :root:not([data-tema="claro"]) .tema-btn .sol { display: block; }
+}
+
+:root[data-tema="escuro"] .tema-btn .lua { display: none; }
+:root[data-tema="escuro"] .tema-btn .sol { display: block; }
+
+/* Paineis */
+
+.painel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+/* os paineis de consulta tem resultado de tamanho imprevisivel: rolam
+   por dentro em vez de estourar a altura fixa da janela */
+#painel-databricks,
+#painel-sdeal,
+#painel-gestao,
+#painel-wings {
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.painel.hidden {
+  display: none;
+}
+
+.painel-texto {
+  margin: 0 0 14px;
+  color: var(--texto-rotulo);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.ferramenta-linha {
+  display: flex;
+  flex-shrink: 0;
+  gap: 9px;
+}
+
+.ferramenta-linha input {
+  flex: 1;
+  height: 40px;
+  padding: 0 12px;
+  color: var(--texto);
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  outline: none;
+}
+
+.ferramenta-linha input::placeholder {
+  color: var(--texto-fraco);
+}
+
+.ferramenta-linha input:focus {
+  border-color: var(--verde);
+}
+
+.ferramenta-linha .primary,
+.ferramenta-linha .secondary {
+  height: 40px;
+  padding: 0 18px;
+  flex-shrink: 0;
+}
+
+.ferramenta-aviso {
+  min-height: 18px;
+  margin: 13px 0 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.ferramenta-aviso.erro {
+  color: var(--vermelho);
+}
+
+.ferramenta-aviso.ok {
+  color: var(--verde-escuro);
+}
+
+.ferramenta-dica {
+  margin: 10px 0 0;
+  color: var(--texto-suave);
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+/* o atalho no meio da frase: monoespacado para nao ser lido como texto */
+.atalho-inline {
+  padding: 1px 5px;
+  color: var(--texto-medio);
+  background: var(--superficie-2);
+  border-radius: 5px;
+  font-family: Consolas, "Courier New", monospace;
+  font-weight: 600;
+}
+
+/* Consulta: os tres destinos empilhados
+   Eram dois botoes na mesma linha do campo. Com o terceiro, a linha teria
+   quatro elementos e nenhum rotulo legivel — a coluna devolve o nome
+   inteiro a cada botao e deixa a ordem de uso visivel de cima para baixo. */
+
+.ferramenta-coluna {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+  margin-top: 9px;
+}
+
+.ferramenta-coluna .primary,
+.ferramenta-coluna .secondary {
+  width: 100%;
+  height: 40px;
+}
+
+/* Aba de captura (OCR) */
+
+.atalho-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 16px;
+  background: var(--verde-claro);
+  border: 1px solid var(--verde-borda);
+  border-radius: 10px;
+}
+
+.atalho-rotulo {
+  color: var(--texto-rotulo);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.atalho-valor {
+  padding: 6px 13px;
+  color: var(--verde-escuro);
+  background: var(--superficie);
+  border: 1px solid var(--verde-borda);
+  border-radius: 8px;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.atalho-valor.vazio {
+  color: var(--vermelho);
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.bloco {
+  width: 100%;
+  margin-top: 12px;
+}
+
+/* Aba Começar o dia ------------------------------------------------
+   Uma linha por sistema: marcar/desmarcar, o nome, e de que jeito se
+   entra nele. O "Sessão ativa" verde e a mesma informação do pontinho
+   das abas de consulta, só que escrita por extenso, porque aqui cabe.
+   ------------------------------------------------------------------ */
+
+/* A lista é quem rola, e não o painel: assim o botão "Começar o dia"
+   fica sempre visível, por mais endereços que você acrescente. Antes ela
+   não rolava nem encolhia (flex-shrink: 0), e a partir do oitavo cartão
+   a lista passava por baixo do rodapé. */
+.dia-lista {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 96px;
+  gap: 6px;
+  margin-bottom: 14px;
+  padding-right: 4px;
+  overflow-y: auto;
+}
+
+/* tudo que não é a lista mantém o tamanho: a lista absorve o que sobra */
+#painel-dia > *:not(.dia-lista) {
+  flex-shrink: 0;
+}
+
+/* rede de segurança: na janela destacada, que o usuário pode encolher, o
+   próprio painel rola se nem o mínimo da lista couber */
+#painel-dia {
+  overflow-y: auto;
+}
+
+.dia-sistema {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 10px;
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 9px;
+}
+
+/* O cartão inteiro se arrasta; o traço só avisa que dá. Fica apagado até
+   o ponteiro entrar no cartão, para a lista parada não virar um paredão
+   de tracinhos. */
+.dia-pegada {
+  display: flex;
+  flex-shrink: 0;
+  color: var(--texto-fraco);
+  opacity: 0.45;
+  cursor: grab;
+}
+
+.dia-sistema:hover .dia-pegada {
+  opacity: 1;
+}
+
+.dia-sistema:active {
+  cursor: grabbing;
+}
+
+/* o cartão que está sendo arrastado continua na lista, apagado, marcando
+   de onde ele saiu */
+.dia-sistema.arrastando {
+  opacity: 0.4;
+  border-color: var(--verde);
+  border-style: dashed;
+}
+
+/* arrastar seleciona texto sem querer, e o texto selecionado atrapalha o
+   próprio arrasto */
+.dia-sistema-nome,
+.dia-sistema-origem,
+.dia-sessao {
+  user-select: none;
+}
+
+/* A aba sendo arrastada. Sem o mesmo tratamento da lista: aqui o que se
+   quer ver é o buraco, porque as vizinhas se mexem para abrir espaço. */
+.aba.arrastando {
+  opacity: 0.35;
+}
+
+.aba {
+  user-select: none;
+}
+
+.dia-sistema:hover {
+  border-color: var(--verde-borda);
+}
+
+.dia-sistema input {
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+  accent-color: var(--verde-solido);
+  cursor: pointer;
+}
+
+.dia-sistema-texto {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  gap: 2px;
+  cursor: pointer;
+}
+
+.dia-sistema-nome {
+  color: var(--texto);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.dia-sistema-origem {
+  overflow: hidden;
+  color: var(--texto-fraco);
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* pastilha neutra: "ainda nao sei" e "vai precisar de login" sao a mesma
+   cor de proposito. So a sessao confirmada ganha verde. */
+.dia-sessao {
+  flex-shrink: 0;
+  padding: 3px 9px;
+  color: var(--neutro-texto);
+  background: var(--neutro-bg);
+  border: 1px solid var(--neutro-borda);
+  border-radius: 20px;
+  font-size: 10.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.dia-sessao.sessao-ok {
+  color: var(--verde-escuro);
+  background: var(--verde-claro);
+  border-color: var(--verde-borda);
+}
+
+/* Resultado das consultas (Databricks, S.Deal, Gestão+ e Wings) ----
+   O mesmo formato nas quatro: um cartao com titulo, o par
+   rotulo/valor por linha, e listas de registros clicaveis.
+   ------------------------------------------------------------------ */
+
+.resultado-consulta {
+  flex-shrink: 0;
+  margin-top: 14px;
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+}
+
+.resultado-consulta.hidden {
+  display: none;
+}
+
+.resultado-cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 14px;
+  background: var(--verde-claro);
+  border-bottom: 1px solid var(--verde-borda);
+  border-radius: 10px 10px 0 0;
+}
+
+.resultado-titulo {
+  color: var(--verde-escuro);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.resultado-titulo.alerta {
+  color: var(--vermelho);
+}
+
+.linhas-cv {
+  padding: 2px 14px 6px;
+}
+
+.linha-cv {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--borda-fraca);
+}
+
+.linha-cv:last-child {
+  border-bottom: none;
+}
+
+.linha-cv-rotulo {
+  flex-shrink: 0;
+  color: var(--texto-suave);
+  font-size: 12px;
+}
+
+.linha-cv-valor {
+  color: var(--texto);
+  font-size: 12.5px;
+  font-weight: 600;
+  text-align: right;
+}
+
+.gestao-divisor {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0;
+  color: var(--texto-fraco);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.gestao-divisor::before,
+.gestao-divisor::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--borda-fraca);
+}
+
+/* Histórico de buscas recentes (Solicitação, S.Deal, Gestão+, Wings) */
+
+.historico-lista {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  margin-top: 9px;
+}
+
+.historico-lista.hidden {
+  display: none;
+}
+
+.historico-rotulo {
+  font-size: 11px;
+  color: var(--texto-fraco);
+  margin-right: 2px;
+}
+
+.historico-chip {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--borda);
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--superficie);
+}
+
+.historico-chip-valor {
+  padding: 4px 4px 4px 10px;
+  font-size: 11.5px;
+  color: var(--texto);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.historico-chip-valor:hover {
+  color: var(--verde-escuro);
+}
+
+.historico-chip-remover {
+  padding: 4px 8px;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--texto-fraco);
+  background: transparent;
+  border: 0;
+  border-left: 1px solid var(--borda);
+  cursor: pointer;
+}
+
+.historico-chip-remover:hover {
+  color: var(--vermelho);
+}
+
+/* Aba Gestão+ */
+
+.lista-registros {
+  display: flex;
+  flex-direction: column;
+}
+
+.registro {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--borda-fraca);
+  cursor: pointer;
+}
+
+.registro:hover {
+  background: var(--verde-claro);
+}
+
+.registro:last-child {
+  border-bottom: none;
+}
+
+.registro-topo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.registro-id {
+  flex-shrink: 0;
+  color: var(--texto-suave);
+  font-size: 12px;
+}
+
+.registro-detalhe {
+  flex-grow: 1;
+  text-align: right;
+  color: var(--texto);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.registro-meta {
+  text-align: right;
+  color: var(--texto-suave);
+  font-size: 11px;
+}
+
+/* Cartao de resultado: o detalhe do pedido no Gestão+, e cada
+   solicitacao no Databricks */
+
+.cartao-resultado {
+  flex-shrink: 0;
+  margin-top: 12px;
+  border: 1px solid var(--verde-borda);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.cartao-resultado.hidden {
+  display: none;
+}
+
+.gestao-pedido-acoes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.copiar-ao-abrir-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--texto-suave);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+}
+
+.copiar-ao-abrir-toggle input {
+  margin: 0;
+  cursor: pointer;
+}
+
+.gestao-pedido-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 14px 0;
+}
+
+.gestao-pedido-badge {
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--verde-claro);
+  color: var(--verde-escuro);
+  border: 1px solid var(--verde-borda);
+}
+
+.gestao-pedido-badge.alerta {
+  background: #fdecea;
+  color: var(--vermelho);
+  border-color: #f5c2be;
+}
+
+.gestao-pedido-secao-titulo {
+  padding: 10px 14px 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--texto-suave);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.gestao-pedido-itens {
+  display: flex;
+  flex-direction: column;
+  padding: 0 14px 6px;
+}
+
+.gestao-pedido-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--borda-fraca);
+}
+
+.gestao-pedido-item:last-child {
+  border-bottom: none;
+}
+
+.gestao-pedido-item-nome {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--texto);
+}
+
+.gestao-pedido-item-linha {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--texto-suave);
+}
+
+.gestao-pedido-totais {
+  border-top: 1px solid var(--borda-fraca);
+  padding-top: 4px;
+}
+
+.gestao-pedido-total-destaque {
+  font-size: 14px;
+  color: var(--verde-escuro);
+}
+
+.gestao-pedido-historico {
+  display: flex;
+  flex-direction: column;
+  padding: 0 14px 12px;
+}
+
+.gestao-pedido-historico-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--borda-fraca);
+}
+
+.gestao-pedido-historico-item:last-child {
+  border-bottom: none;
+}
+
+.gestao-pedido-historico-cabecalho {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.gestao-pedido-historico-situacao {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--texto);
+}
+
+.gestao-pedido-historico-codigo {
+  flex-shrink: 0;
+  font-size: 10.5px;
+  font-family: "Courier New", Consolas, monospace;
+  color: var(--texto-suave);
+}
+
+.gestao-pedido-historico-descricao {
+  font-size: 12px;
+  color: var(--texto-suave);
+}
+
+.gestao-pedido-historico-data {
+  font-size: 11px;
+  color: var(--texto-suave);
+}
+
+.resultado-vazio {
+  padding: 12px 14px;
+  color: var(--texto-suave);
+  font-size: 12.5px;
+}
+
+.wings-secao {
+  border-top: 1px solid var(--borda);
+}
+
+.wings-secao-cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+
+.wings-secao-cabecalho:hover {
+  background: var(--superficie-hover, rgba(255, 255, 255, 0.03));
+}
+
+.wings-secao-titulo {
+  color: var(--texto-suave);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.wings-secao-contagem {
+  margin-left: 6px;
+  color: var(--texto-suave);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.wings-secao-seta {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  color: var(--texto-suave);
+  transition: transform 0.15s ease;
+}
+
+.wings-secao-cabecalho[aria-expanded="true"] .wings-secao-seta {
+  transform: rotate(180deg);
+}
+
+.wings-secao-conteudo.hidden {
+  display: none;
+}
+
+.wings-emissao {
+  margin: 6px 14px 10px;
+  border: 1px solid var(--borda-fraca);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.wings-emissao:last-child {
+  margin-bottom: 12px;
+}
+
+.wings-emissao .linha-cv {
+  padding: 7px 12px;
+}
+
+.linhas-cv .linha-cv {
+  flex-wrap: wrap;
+}
+
+.linhas-cv .linha-cv-valor {
+  text-align: right;
+  word-break: break-word;
+  max-width: 62%;
+}
+
+/* Aba de parceiros */
+
+.filtro-uf {
+  width: 74px;
+  height: 38px;
+  padding: 0 8px;
+  color: var(--texto);
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  outline: none;
+  cursor: pointer;
+}
+
+.filtro-uf:focus {
+  border-color: var(--verde);
+}
+
+.parceiros-info {
+  margin: 10px 0 8px;
+  color: var(--texto-suave);
+  font-size: 11.5px;
+}
+
+.lista-parceiros {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.parceiro {
+  padding: 11px 13px;
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+}
+
+.parceiro-topo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.parceiro-nome {
+  overflow: hidden;
+  color: var(--texto);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* UF e pais sao CATEGORIA, nao estado: pilula neutra. O verde fica
+   reservado para o que exige atencao (selecao) e para acao. O efeito
+   colateral e o que interessa: o vermelho de "Fechada" passa a ser a
+   unica cor forte da lista. */
+.parceiro-uf {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  color: var(--neutro-texto);
+  background: var(--neutro-bg);
+  border: 1px solid var(--neutro-borda);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.parceiro-local {
+  margin-bottom: 3px;
+  color: var(--texto-medio);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.parceiro-end {
+  color: var(--texto-suave);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.parceiro-rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 9px;
+}
+
+.parceiro-tel {
+  color: var(--texto);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.parceiro-acoes {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.parceiro-vazio {
+  padding: 24px 14px;
+  color: var(--texto-suave);
+  font-size: 12.5px;
+  text-align: center;
+}
+
+.parceiro-mais {
+  padding: 11px;
+  color: var(--texto-suave);
+  font-size: 11.5px;
+  text-align: center;
+}
+
+/* Alternador nacional / internacional */
+
+/* Os dois blocos da aba "Lojas". A especificidade dupla no .hidden
+   e de proposito: sozinha ela perderia para .bloco-escopo, que vem depois
+   dela no arquivo. */
+.bloco-escopo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.bloco-escopo.hidden {
+  display: none;
+}
+
+.escopo {
+  display: flex;
+  gap: 3px;
+  padding: 3px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+  background: var(--superficie-2);
+  border-radius: 9px;
+}
+
+.escopo-btn {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 6px;
+  color: var(--texto-suave);
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.escopo-btn.ativo {
+  color: var(--verde-escuro);
+  background: var(--pastilha-ativa);
+  font-weight: 600;
+  box-shadow: var(--sombra-pastilha);
+}
+
+.parceiro-pais {
+  flex-shrink: 0;
+  padding: 2px 9px;
+  color: var(--neutro-texto);
+  background: var(--neutro-bg);
+  border: 1px solid var(--neutro-borda);
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.parceiro-unidade {
+  margin-bottom: 3px;
+  color: var(--texto-medio);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+/* Cartões de loja Soluti */
+
+.loja-status {
+  flex-shrink: 0;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+/* loja aberta e o caso normal: nao merece cor nenhuma */
+.loja-status.aberta {
+  color: var(--neutro-texto);
+  background: var(--neutro-bg);
+  border: 1px solid var(--neutro-borda);
+}
+
+.loja-status.fechada {
+  color: var(--vermelho);
+  background: var(--vermelho-bg);
+  border: 1px solid var(--vermelho-borda);
+  font-weight: 700;
+}
+
+.loja-horarios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-top: 8px;
+  color: var(--texto-medio);
+  font-size: 12px;
+}
+
+.loja-horarios b {
+  color: var(--texto-suave);
+  font-weight: 600;
+}
+
+/* faixa de e-mail no rodape do cartao — usada por loja e por parceiro */
+.cartao-email {
+  margin-top: 8px;
+}
+
+.cartao-email .parceiro-tel {
+  color: var(--texto-suave);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Atualizar lojas */
+
+.lojas-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.link-btn {
+  padding: 3px 8px;
+  color: var(--verde);
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.link-btn:hover {
+  background: var(--verde-claro);
+}
+
+.link-btn:disabled {
+  color: var(--texto-suave);
+  cursor: default;
+  background: transparent;
+}
+
+.parceiro-acoes .maps {
+  color: var(--verde-escuro);
+}
+
+/* Cards clicaveis para copiar */
+
+.parceiro.copiavel {
+  position: relative;
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s;
+}
+
+.parceiro.copiavel:hover {
+  border-color: var(--verde);
+  background: var(--verde-cartao);
+}
+
+/* os cartoes entram na tabulacao: o foco precisa ser visivel */
+.parceiro.copiavel:focus-visible {
+  outline: 2px solid var(--verde);
+  outline-offset: 1px;
+}
+
+.parceiro.copiavel:active {
+  background: var(--verde-claro);
+}
+
+.parceiro.copiado {
+  border-color: var(--verde);
+  background: var(--verde-claro);
+}
+
+.selo-copiado {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  padding: 3px 9px;
+  color: white;
+  background: var(--verde-solido);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.info-acoes {
+  display: flex;
+  gap: 4px;
+}
+
+/* Selecao de cartoes (lojas e parceiros) --------------------------- */
+
+.hidden {
+  display: none;
+}
+
+.info-resumo {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+/* data da ultima busca das lojas: discreta, ao lado do contador */
+.carimbo {
+  flex-shrink: 0;
+  color: var(--texto-suave);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.selecao-tag {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  color: var(--verde-escuro);
+  background: var(--verde-claro);
+  border: 1px solid var(--verde-borda);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* barra verde a esquerda: marca o cartao sem mexer no layout dele */
+.parceiro.selecionado {
+  border-color: var(--verde);
+  background: var(--verde-claro);
+  box-shadow: inset 3px 0 0 var(--verde);
+}
+
+.parceiro.selecionado:hover {
+  background: var(--verde-selecao);
+}
+
+.parceiro-topo-acoes {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  /* .parceiro-topo alinha pela baseline: o botao nao tem texto e puxaria
+     a etiqueta para baixo */
+  align-self: center;
+}
+
+.cartao-copiar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 22px;
+  padding: 0;
+  color: var(--texto-suave);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 0.12s, color 0.12s, background 0.12s;
+}
+
+.parceiro:hover .cartao-copiar {
+  opacity: 1;
+}
+
+.cartao-copiar:hover {
+  color: var(--verde-escuro);
+  background: var(--superficie);
+  border-color: var(--verde-borda);
+}
+
+/* Aba de E-mails */
+
+.campo-email {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 12px;
+}
+
+.campo-rotulo {
+  color: var(--texto-rotulo);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.campo-email select,
+.campo-email input {
+  height: 38px;
+  padding: 0 12px;
+  color: var(--texto);
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  outline: none;
+}
+
+.campo-email select {
+  cursor: pointer;
+}
+
+.campo-email input::placeholder {
+  color: var(--texto-fraco);
+}
+
+.campo-email select:focus,
+.campo-email input:focus {
+  border-color: var(--verde);
+}
+
+.confirmar-email {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 13px 14px;
+  margin-top: 10px;
+  background: var(--verde-claro);
+  border: 1px solid var(--verde-borda);
+  border-radius: 10px;
+}
+
+/* especificidade dupla de proposito, como .formulario.hidden acima: sozinha
+   ela perderia para .confirmar-email, que vem depois dela no arquivo */
+.confirmar-email.hidden {
+  display: none;
+}
+
+.confirmar-email-texto {
+  margin: 0;
+  color: var(--texto-medio);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.confirmar-email-botoes {
+  display: flex;
+  gap: 9px;
+}
+
+.confirmar-email-botoes button {
+  flex: 1;
+}
+
+.previa-email {
+  flex: 1;
+  min-height: 0;
+}
+
+.previa-email-rotulo {
+  color: var(--texto-rotulo);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.previa-email-campo {
+  margin-top: 10px;
+}
+
+.previa-email-campo b {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--texto-suave);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.previa-email-assunto {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Aviso de uma vez so: o Cco fixo antigo virou Cco de modelo. Some quando
+   o atendente clica em "Entendi". Cor de aviso, nao de erro — nada quebrou,
+   mas o endereco que aparece ali pode ser o unico registro dele. */
+.noticia {
+  flex-shrink: 0;
+  padding: 11px 13px;
+  margin-bottom: 12px;
+  background: var(--superficie-4);
+  border: 1px solid var(--borda);
+  border-left: 3px solid var(--verde);
+  border-radius: 8px;
+}
+
+.noticia p {
+  margin: 0 0 9px;
+  color: var(--texto-medio);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.noticia .secondary {
+  height: 28px;
+  padding: 0 12px;
+  font-size: 11.5px;
+}
+
+/* o Cco e oculto para quem recebe, nao para quem envia: o endereco aparece
+   na confirmacao para ninguem descobrir meses depois que estava copiando */
+.confirmar-email-cco {
+  margin: 6px 0 0;
+  color: var(--texto-suave);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+/* a .lista dos macros tem 42% porque divide o painel com o detalhe; aqui
+   a lista e sozinha. Classe dupla de proposito: com uma so, .lista venceria
+   por vir depois no arquivo */
+.lista.lista-modelos {
+  width: 100%;
+  flex: 1;
+}
+
+/* o endereco copiado aparece na lista: um Cco que so se descobre abrindo
+   o modelo e um Cco que ninguem confere */
+.modelo-cco {
+  flex-shrink: 0;
+  overflow: hidden;
+  color: var(--texto-tag);
+  font-size: 10.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item.ativo .modelo-cco {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.modelo-marcadores {
+  flex-shrink: 0;
+  color: var(--texto-tag);
+  font-size: 10.5px;
+  font-family: Consolas, "Courier New", monospace;
+}
+
+.item.ativo .modelo-marcadores {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.item-meio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 1;
+}
+
+/* na lista de macros as acoes so aparecem no hover porque o item tambem
+   serve para selecionar. Aqui o item nao seleciona nada: editar e excluir
+   sao a unica coisa que ele faz, e escondê-las esconderia a funcao */
+.lista-modelos .acoes {
+  display: flex;
+}
